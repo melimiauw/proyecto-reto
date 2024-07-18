@@ -1,0 +1,210 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+
+public class Program
+{
+    static double fuerza = 0; // Inicializamos fuerza
+
+    public static void Main()
+    {
+        // Establecer la codificación de salida de la consola a UTF-8 para manejar caracteres especiales
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        // Introducción del juego
+        Console.WriteLine("¡Hola! Bienvenido a CHRONO GEM");
+        Thread.Sleep(1000);
+        Console.WriteLine("Juego creado por Ismael Avila y Alejandra Peralvo");
+        Thread.Sleep(1000);
+        Console.WriteLine("Esperamos que el juego sea de tu agrado y puedas ganar ¡Buena suerte!");
+        Thread.Sleep(2000);
+        Console.WriteLine("Hola, viajero. Gracias por venir a ayudarnos a salvar la casa Cordero...");
+        Thread.Sleep(4000);
+
+        // Presentación de personajes
+        Console.WriteLine("Para poder continuar, especifica qué personaje de la familia Cordero deseas representar:");
+        Thread.Sleep(4000);
+        var personajes = new Dictionary<string, string>
+        {
+            { "a", "Luis Cordero (Piel mestiza, Cabello Castaño, Barba abundante)" },
+            { "b", "Jesus Davila Cordero (Piel mestiza, Cabello negro recogido en dos trenzas, vestido de color vino, Amuletos en las muñecas)" },
+            { "c", "Teresa de Jesus Cordero (Piel mestiza, Cabello y cuello tapados por una sotana de monja)" }
+        };
+
+        foreach (var personaje in personajes)
+        {
+            Console.WriteLine($"{personaje.Key}) {personaje.Value}");
+        }
+
+        string seleccion = Console.ReadLine().Trim().ToLower();
+
+        // Poderes
+        if (seleccion == "a")
+        {
+            Console.WriteLine("Hola Luis Cordero, tu habilidad son los conocimientos en botánica.");
+            fuerza += 2;
+        }
+        else if (seleccion == "b")
+        {
+            Console.WriteLine("Hola Jesus Davila Cordero, tu habilidad son los conocimientos literarios.");
+            fuerza += 2;
+        }
+        else if (seleccion == "c")
+        {
+            Console.WriteLine("Hola Teresa de Jesus Cordero, tu habilidad son los conocimientos religiosos.");
+            fuerza += 2;
+        }
+
+        // Preguntas y lógica del juego
+        PreguntasNivel("Nivel 1: EL CINE", new List<Pregunta>
+        {
+            new Pregunta("¿Cuál es una de las películas más reconocidas del cine cuencano?", new Dictionary<string, string>
+            {
+                { "A", "Rosa" },
+                { "B", "El secreto de Magdalena" },
+                { "C", "A tus espaldas" }
+            }, "B"),
+            new Pregunta("¿Quién es un destacado director de cine cuencano?", new Dictionary<string, string>
+            {
+                { "A", "Sebastián Cordero" },
+                { "B", "Tania Hermida" },
+                { "C", "Tito Jara" }
+            }, "C")
+        });
+
+        // Jefes y siguientes niveles
+        Jefe(6, "JEFE GRIS");
+        PreguntasNivel("Nivel 2: EL JARDIN", new List<Pregunta>
+        {
+            new Pregunta("¿Cuál es una de las especies de plantas endémicas más conocidas en la región de Cuenca?", new Dictionary<string, string>
+            {
+                { "A", "Rosa" },
+                { "B", "Orchidaceae" },
+                { "C", "Quercus" }
+            }, "B"),
+            new Pregunta("¿Cuál es el uso tradicional de la planta Achupalla en Cuenca?", new Dictionary<string, string>
+            {
+                { "A", "Medicinal" },
+                { "B", "Alimenticio" },
+                { "C", "Ornamental" }
+            }, "A")
+        });
+
+        Jefe(10, "JEFE VERDE");
+        PreguntasNivel("Nivel 3: LA MUSICA", new List<Pregunta>
+        {
+            new Pregunta("¿Qué famoso músico cuencano es conocido por su contribución a la música ecuatoriana y especialmente al pasillo?", new Dictionary<string, string>
+            {
+                { "A", "Julio Jaramillo" },
+                { "B", "Carlos Bonilla Chávez" },
+                { "C", "Abdon Calderón" },
+                { "D", "Luis Enrique Góngora" }
+            }, "B"),
+            new Pregunta("¿Qué instrumento es comúnmente utilizado en la música tradicional cuencana?", new Dictionary<string, string>
+            {
+                { "A", "Guitarra" },
+                { "B", "Bandola" },
+                { "C", "Armónica" }
+            }, "B")
+        });
+
+        Jefe(15, "JEFE AZUL");
+        PreguntasNivel("Nivel 4: EL TEATRO", new List<Pregunta>
+        {
+            new Pregunta("¿Cuál es una compañía de teatro reconocida en Cuenca?", new Dictionary<string, string>
+            {
+                { "A", "Teatro Malayerba" },
+                { "B", "Teatro del Pueblo" },
+                { "C", "Grupo de Teatro Barojo" },
+                { "D", "Teatro Ensayo" }
+            }, "C"),
+            new Pregunta("¿En qué mes se suele celebrar el Festival Internacional de Teatro de Cuenca?", new Dictionary<string, string>
+            {
+                { "A", "Enero" },
+                { "B", "Abril" },
+                { "C", "Agosto" },
+                { "D", "Octubre" }
+            }, "D")
+        });
+
+        Jefe(20, "JEFE ROJO");
+        Console.WriteLine($"\n¡Felicidades! Has completado todas las pruebas y derrotado a todos los jefes. Tu fuerza final es de {fuerza}. ¡Gracias por jugar a CHRONO GEM!");
+    }
+
+    static void PreguntasNivel(string nivel, List<Pregunta> preguntas)
+    {
+        Console.WriteLine($"\n{nivel}");
+        foreach (var pregunta in preguntas)
+        {
+            HacerPregunta(pregunta);
+            fuerza += 2.5; // Incrementar fuerza por responder correctamente
+        }
+    }
+
+    static void HacerPregunta(Pregunta pregunta)
+    {
+        while (true)
+        {
+            Console.WriteLine($"\n{pregunta.Texto}");
+            foreach (var opcion in pregunta.Respuestas)
+            {
+                Console.WriteLine($"{opcion.Key}: {opcion.Value}");
+            }
+
+            string respuesta = Console.ReadLine().Trim().ToUpper();
+
+            if (respuesta.Equals(pregunta.RespuestaCorrecta, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("\n¡Respuesta correcta!");
+                return;
+            }
+            else
+            {
+                fuerza -= 0.5; // Restar 0.5 a la fuerza
+                Console.WriteLine($"Tu respuesta es incorrecta. Fuerza actual: {fuerza:F1}. Inténtalo de nuevo.");
+                Thread.Sleep(1000);
+            }
+
+            if (fuerza <= 0)
+            {
+                Console.WriteLine("Te has quedado sin fuerza. Fin del juego.");
+                Environment.Exit(0); // Terminar el juego si la fuerza llega a 0
+            }
+        }
+    }
+
+    static void Jefe(double fuerzaJefe, string nombreJefe)
+    {
+        Console.WriteLine($"Tu fuerza actual es: {fuerza}");
+        Thread.Sleep(1000);
+        Console.WriteLine($"Oh no, encontraste al {nombreJefe}.");
+        Thread.Sleep(1000);
+        Console.WriteLine($"Su fuerza es de: {fuerzaJefe}");
+        Thread.Sleep(1000);
+
+        if (fuerza > fuerzaJefe)
+        {
+            Console.WriteLine("¡Has ganado la pelea!");
+        }
+        else
+        {
+            Console.WriteLine("¡Has perdido!");
+            Console.WriteLine("Espero que en el próximo intento puedas ganar.");
+            Environment.Exit(0);
+        }
+    }
+}
+
+class Pregunta
+{
+    public string Texto { get; }
+    public Dictionary<string, string> Respuestas { get; }
+    public string RespuestaCorrecta { get; }
+
+    public Pregunta(string texto, Dictionary<string, string> respuestas, string respuestaCorrecta)
+    {
+        Texto = texto;
+        Respuestas = respuestas;
+        RespuestaCorrecta = respuestaCorrecta;
+    }
+}
