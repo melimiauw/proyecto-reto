@@ -54,7 +54,7 @@ def hacer_pregunta(pregunta_obj):
 
         if evaluar_respuesta(respuesta, pregunta_obj["respuesta_correcta"]):
             print("\n""¡Respuesta correcta!")
-            return True
+            break
         else:
             fuerza -= 0.5  # Restar 0.5 a la fuerza
             print(f"Tu respuesta es incorrecta. Fuerza actual: {fuerza:.1f}. Inténtalo de nuevo.")
